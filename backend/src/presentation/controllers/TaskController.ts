@@ -5,6 +5,7 @@ import { GetTaskById } from '../../use-cases/tasks/GetTaskById';
 import { UpdateTask } from '../../use-cases/tasks/UpdateTask';
 import { DeleteTask } from '../../use-cases/tasks/DeleteTask';
 import { TaskStatus, TaskPriority } from '../../domain/entities/Task';
+import { isPastDate } from '../../infrastructure/utils/dateUtils';
 
 export class TaskController {
   constructor(
@@ -19,37 +20,35 @@ export class TaskController {
     try {
       const { title, description, status, priority, dueDate } = req.body;
 
-      // Validate required fields
       if (!title || typeof title !== 'string' || !title.trim()) {
         return res.status(400).json({ error: 'Task title is required and cannot be empty' });
       }
 
-      // Validate title length
       if (title.trim().length > 500) {
         return res.status(400).json({ error: 'Task title must be 500 characters or less' });
       }
 
-      // Validate description length
       if (description && typeof description === 'string' && description.length > 5000) {
         return res.status(400).json({ error: 'Task description must be 5000 characters or less' });
       }
 
-      // Validate status enum
       if (status && !Object.values(TaskStatus).includes(status as TaskStatus)) {
         return res.status(400).json({ error: `Invalid status. Must be one of: ${Object.values(TaskStatus).join(', ')}` });
       }
 
-      // Validate priority enum
       if (priority && !Object.values(TaskPriority).includes(priority as TaskPriority)) {
         return res.status(400).json({ error: `Invalid priority. Must be one of: ${Object.values(TaskPriority).join(', ')}` });
       }
 
-      // Validate and parse date
       let parsedDueDate: Date | undefined;
       if (dueDate) {
         parsedDueDate = new Date(dueDate);
         if (isNaN(parsedDueDate.getTime())) {
           return res.status(400).json({ error: 'Invalid due date format' });
+        }
+        
+        if (isPastDate(parsedDueDate)) {
+          return res.status(400).json({ error: 'Cannot select past date. Please select today or a future date.' });
         }
       }
 
@@ -72,23 +71,19 @@ export class TaskController {
     try {
       const { search, status, priority, dueDateFrom, dueDateTo } = req.query;
 
-      // Validate search parameter
       const searchStr = search && typeof search === 'string' ? search.trim() : undefined;
       if (searchStr && searchStr.length > 500) {
         return res.status(400).json({ error: 'Search query must be 500 characters or less' });
       }
 
-      // Validate status enum
       if (status && !Object.values(TaskStatus).includes(status as TaskStatus)) {
         return res.status(400).json({ error: `Invalid status filter. Must be one of: ${Object.values(TaskStatus).join(', ')}` });
       }
 
-      // Validate priority enum
       if (priority && !Object.values(TaskPriority).includes(priority as TaskPriority)) {
         return res.status(400).json({ error: `Invalid priority filter. Must be one of: ${Object.values(TaskPriority).join(', ')}` });
       }
 
-      // Validate and parse dates
       let parsedDueDateFrom: Date | undefined;
       let parsedDueDateTo: Date | undefined;
 
@@ -106,7 +101,6 @@ export class TaskController {
         }
       }
 
-      // Validate date range
       if (parsedDueDateFrom && parsedDueDateTo && parsedDueDateFrom > parsedDueDateTo) {
         return res.status(400).json({ error: 'dueDateFrom must be before or equal to dueDateTo' });
       }
@@ -132,12 +126,10 @@ export class TaskController {
     try {
       const { id } = req.params;
 
-      // Validate ID exists
       if (!id || !id.trim()) {
         return res.status(400).json({ error: 'Task ID is required' });
       }
 
-      // Validate ID format (UUID or valid string)
       if (id.trim().length > 100) {
         return res.status(400).json({ error: 'Invalid task ID format' });
       }
@@ -157,18 +149,15 @@ export class TaskController {
       const { id } = req.params;
       const { title, description, status, priority, dueDate } = req.body;
 
-      // Validate ID exists
       if (!id || !id.trim()) {
         return res.status(400).json({ error: 'Task ID is required' });
       }
 
-      // Validate at least one field to update
       if (title === undefined && description === undefined && status === undefined && 
           priority === undefined && dueDate === undefined) {
         return res.status(400).json({ error: 'At least one field must be provided for update' });
       }
 
-      // Validate title if provided
       if (title !== undefined) {
         if (typeof title !== 'string') {
           return res.status(400).json({ error: 'Title must be a string' });
@@ -181,7 +170,6 @@ export class TaskController {
         }
       }
 
-      // Validate description if provided
       if (description !== undefined) {
         if (description !== null && typeof description !== 'string') {
           return res.status(400).json({ error: 'Description must be a string or null' });
@@ -191,17 +179,14 @@ export class TaskController {
         }
       }
 
-      // Validate status enum if provided
       if (status !== undefined && !Object.values(TaskStatus).includes(status as TaskStatus)) {
         return res.status(400).json({ error: `Invalid status. Must be one of: ${Object.values(TaskStatus).join(', ')}` });
       }
 
-      // Validate priority enum if provided
       if (priority !== undefined && !Object.values(TaskPriority).includes(priority as TaskPriority)) {
         return res.status(400).json({ error: `Invalid priority. Must be one of: ${Object.values(TaskPriority).join(', ')}` });
       }
 
-      // Validate and parse date if provided
       let parsedDueDate: Date | null | undefined;
       if (dueDate !== undefined) {
         if (dueDate === null) {
@@ -210,6 +195,10 @@ export class TaskController {
           parsedDueDate = new Date(dueDate);
           if (isNaN(parsedDueDate.getTime())) {
             return res.status(400).json({ error: 'Invalid due date format' });
+          }
+          
+          if (parsedDueDate !== null && isPastDate(parsedDueDate)) {
+            return res.status(400).json({ error: 'Cannot select past date. Please select today or a future date.' });
           }
         }
       }
@@ -236,12 +225,10 @@ export class TaskController {
     try {
       const { id } = req.params;
 
-      // Validate ID exists
       if (!id || !id.trim()) {
         return res.status(400).json({ error: 'Task ID is required' });
       }
 
-      // Validate ID format
       if (id.trim().length > 100) {
         return res.status(400).json({ error: 'Invalid task ID format' });
       }

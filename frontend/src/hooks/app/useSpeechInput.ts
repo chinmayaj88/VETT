@@ -22,6 +22,7 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const isCancelledRef = useRef<boolean>(false);
 
   const voiceApi = useVoiceApi();
 
@@ -35,7 +36,6 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
       try {
         mediaRecorderRef.current?.stop();
       } catch {
-        // Ignore cleanup errors
       }
       mediaRecorderRef.current = null;
     }
@@ -114,6 +114,15 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
       };
 
       mediaRecorder.onstop = async () => {
+        if (isCancelledRef.current) {
+          isCancelledRef.current = false;
+          setIsListening(false);
+          setIsLoading(false);
+          setIsTranscribing(false);
+          cleanup();
+          return;
+        }
+
         if (audioChunksRef.current.length === 0) {
           setIsListening(false);
           setIsLoading(false);
@@ -128,8 +137,7 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
             type: mediaRecorder.mimeType,
           });
 
-          // Validate file size (10MB limit)
-          const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+          const MAX_FILE_SIZE = 10 * 1024 * 1024;
           if (audioBlob.size > MAX_FILE_SIZE) {
             setErrorMessage('Audio file is too large. Maximum size is 10MB. Please record a shorter clip.');
             setIsTranscribing(false);
@@ -139,8 +147,7 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
             return;
           }
 
-          // Validate minimum file size
-          const MIN_FILE_SIZE = 1024; // 1KB minimum
+          const MIN_FILE_SIZE = 1024;
           if (audioBlob.size < MIN_FILE_SIZE) {
             setErrorMessage('Audio recording is too short. Please record at least a few seconds of audio.');
             setIsTranscribing(false);
@@ -156,7 +163,6 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
 
           const result = await voiceApi.transcribeAndParse(audioFile);
           
-          // Validate API response
           if (!result || typeof result !== 'object' || !result.transcript) {
             throw new Error('Invalid response from server');
           }
@@ -192,12 +198,17 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
     }
   };
 
-  const stopListening = () => {
+  const stopListening = (cancelled: boolean = false) => {
+    if (cancelled) {
+      isCancelledRef.current = true;
+    }
     if (mediaRecorderRef.current?.state !== 'inactive') {
       mediaRecorderRef.current?.stop();
     }
     setIsListening(false);
-    cleanup();
+    if (!cancelled) {
+      cleanup();
+    }
   };
 
   const handleConfirm = () => {
@@ -211,7 +222,7 @@ export function useSpeechInput({ value, onChange, disabled }: UseSpeechInputPara
   };
 
   const handleCancel = () => {
-    stopListening();
+    stopListening(true);
     onChange(value);
     setPendingTranscript('');
     setErrorMessage(null);

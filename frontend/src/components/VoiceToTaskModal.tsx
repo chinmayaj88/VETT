@@ -195,6 +195,12 @@ export default function VoiceToTaskModal({ isOpen, onClose, onConfirm }: VoiceTo
               <DialogDescription>Review and edit the task details before creating</DialogDescription>
             </DialogHeader>
 
+            {errorMessage && (
+              <div className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                <p className="text-yellow-400 text-sm font-medium">{errorMessage}</p>
+              </div>
+            )}
+
             <div className="space-y-5 py-4">
               <div className="space-y-2">
                 <Label htmlFor="preview-title">Title</Label>

@@ -37,9 +37,8 @@ export function useVoiceToTask({ isOpen, onClose }: UseVoiceToTaskParams) {
     if (mediaRecorderRef.current?.state !== 'inactive') {
       try {
         mediaRecorderRef.current?.stop();
-      } catch {
-        // Ignore cleanup errors
-      }
+    } catch {
+    }
       mediaRecorderRef.current = null;
     }
 
@@ -173,8 +172,7 @@ export function useVoiceToTask({ isOpen, onClose }: UseVoiceToTaskParams) {
       const mimeType = mediaRecorderRef.current?.mimeType || getMimeType();
       const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
       
-      // Validate file size (10MB limit)
-      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
       if (audioBlob.size > MAX_FILE_SIZE) {
         setErrorMessage('Audio file is too large. Maximum size is 10MB. Please record a shorter clip.');
         setIsTranscribing(false);
@@ -182,8 +180,7 @@ export function useVoiceToTask({ isOpen, onClose }: UseVoiceToTaskParams) {
         return;
       }
 
-      // Validate minimum file size (audio must have content)
-      const MIN_FILE_SIZE = 1024; // 1KB minimum
+      const MIN_FILE_SIZE = 1024;
       if (audioBlob.size < MIN_FILE_SIZE) {
         setErrorMessage('Audio recording is too short. Please record at least a few seconds of audio.');
         setIsTranscribing(false);
@@ -195,7 +192,6 @@ export function useVoiceToTask({ isOpen, onClose }: UseVoiceToTaskParams) {
 
       const result = await voiceApi.transcribeAndParse(audioFile);
       
-      // Validate API response
       if (!result || typeof result !== 'object') {
         throw new Error('Invalid response from server');
       }

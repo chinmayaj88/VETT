@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ParseVoiceInput } from '../../use-cases/voice/ParseVoiceInput';
 import { SpeechToTextService } from '../../infrastructure/services/SpeechToTextService';
+import { isPastDate, isTodayOrFuture } from '../../infrastructure/utils/dateUtils';
 
 export class VoiceController {
   constructor(
@@ -12,28 +13,58 @@ export class VoiceController {
     try {
       const { transcript } = req.body;
 
-      // Validate transcript exists
       if (!transcript) {
         return res.status(400).json({ error: 'Transcript is required' });
       }
 
-      // Validate transcript is a string
       if (typeof transcript !== 'string') {
         return res.status(400).json({ error: 'Transcript must be a string' });
       }
 
-      // Validate transcript is not empty
       if (!transcript.trim()) {
         return res.status(400).json({ error: 'Transcript cannot be empty' });
       }
 
-      // Validate transcript length (reasonable limit)
       if (transcript.length > 10000) {
         return res.status(400).json({ error: 'Transcript must be 10000 characters or less' });
       }
 
       const result = await this.parseVoiceInput.execute(transcript.trim());
-      res.json(result);
+
+      if (result.parsed.dueDate) {
+        try {
+          const dueDate = typeof result.parsed.dueDate === 'string' 
+            ? new Date(result.parsed.dueDate) 
+            : result.parsed.dueDate;
+          
+          if (isNaN(dueDate.getTime())) {
+            return res.status(400).json({ 
+              error: 'Invalid date format received. Please try again.' 
+            });
+          }
+
+          if (isPastDate(dueDate)) {
+            return res.status(400).json({ 
+              error: 'Cannot select past date. Please select today or a future date.' 
+            });
+          }
+
+          if (!isTodayOrFuture(dueDate)) {
+            return res.status(400).json({ 
+              error: 'Invalid date. Please select today or a future date.' 
+            });
+          }
+        } catch (error) {
+          return res.status(400).json({ 
+            error: 'Invalid date format. Please try again.' 
+          });
+        }
+      }
+
+      res.json({
+        transcript: result.transcript,
+        parsed: result.parsed,
+      });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to parse transcript';
       res.status(500).json({ error: message });
@@ -42,24 +73,20 @@ export class VoiceController {
 
   async transcribeAndParse(req: Request, res: Response) {
     try {
-      // Validate file exists
       if (!req.file) {
         return res.status(400).json({ error: 'Audio file is required' });
       }
 
-      // Validate file size (10MB limit)
-      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
       if (req.file.size > MAX_FILE_SIZE) {
         return res.status(413).json({ error: 'Audio file is too large. Maximum size is 10MB' });
       }
 
-      // Validate minimum file size (audio must have content)
-      const MIN_FILE_SIZE = 1024; // 1KB minimum
+      const MIN_FILE_SIZE = 1024;
       if (req.file.size < MIN_FILE_SIZE) {
         return res.status(400).json({ error: 'Audio file is too small. Please upload a valid audio file' });
       }
 
-      // Validate file type
       const allowedMimeTypes = [
         'audio/webm',
         'audio/mp4',
@@ -76,7 +103,6 @@ export class VoiceController {
         });
       }
 
-      // Validate buffer exists
       if (!req.file.buffer || req.file.buffer.length === 0) {
         return res.status(400).json({ error: 'Audio file is empty or corrupted' });
       }
@@ -86,12 +112,41 @@ export class VoiceController {
         req.file.mimetype
       );
 
-      // Validate transcription result
       if (!transcription || !transcription.transcript) {
         return res.status(500).json({ error: 'Failed to transcribe audio. Please try again.' });
       }
 
       const result = await this.parseVoiceInput.execute(transcription.transcript);
+
+      if (result.parsed.dueDate) {
+        try {
+          const dueDate = typeof result.parsed.dueDate === 'string' 
+            ? new Date(result.parsed.dueDate) 
+            : result.parsed.dueDate;
+          
+          if (isNaN(dueDate.getTime())) {
+            return res.status(400).json({ 
+              error: 'Invalid date format received. Please try again.' 
+            });
+          }
+
+          if (isPastDate(dueDate)) {
+            return res.status(400).json({ 
+              error: 'Cannot select past date. Please select today or a future date.' 
+            });
+          }
+
+          if (!isTodayOrFuture(dueDate)) {
+            return res.status(400).json({ 
+              error: 'Invalid date. Please select today or a future date.' 
+            });
+          }
+        } catch (error) {
+          return res.status(400).json({ 
+            error: 'Invalid date format. Please try again.' 
+          });
+        }
+      }
 
       res.json({
         transcript: transcription.transcript,

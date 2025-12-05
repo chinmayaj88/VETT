@@ -53,5 +53,6 @@ export interface ParsedTaskData {
 export interface VoiceParseResponse {
   transcript: string;
   parsed: ParsedTaskData;
+  warning?: string;
 }
 

@@ -1,562 +1,647 @@
-<div align="center">
+# SDE Assignment - Voice-Enabled Task Tracker
 
-```
-██╗   ██╗███████╗████████╗████████╗
-██║   ██║██╔════╝╚══██╔══╝╚══██╔══╝
-██║   ██║█████╗     ██║      ██║   
-╚██╗ ██╔╝██╔══╝     ██║      ██║   
- ╚████╔╝ ███████╗   ██║      ██║   
-  ╚═══╝  ╚══════╝   ╚═╝      ╚═╝   
-```
-
-# 🎤 Voice-Enabled Task Tracker
-
-### *Speak your tasks into existence* ✨
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-
+A full-stack task management application that transforms voice input into organized tasks using AI-powered natural language processing.
 
 ---
 
-</div>
+## 1. Project Setup
 
-## 🎯 What is Vett?
+### a. Prerequisites
 
-> **Vett** is a revolutionary task management application that transforms your voice into organized tasks. Simply speak naturally, and watch as AI intelligently extracts task details, priorities, due dates, and more - all automatically!
-
-<div align="center">
-
-### 🚀 **Get Started in Minutes**
-
-[Quick Start](#-quick-start) • [Features](#-features) • [Documentation](#-api-documentation) • [How It Works](#-how-it-works)
-
----
-
-</div>
-
-## ✨ Features
-
-<div align="center">
-
-| 🎤 | 📋 | 🔍 | 🎨 | ⚡ | 🤖 |
-|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Voice Input** | **Kanban Board** | **Smart Filtering** | **Modern UI** | **Real-time Audio** | **AI-Powered** |
-| Speak naturally to create tasks | Drag-and-drop task management | Search & filter by status/priority | Dark theme with responsive design | Visual feedback while recording | Google Gemini NLP parsing |
-
-</div>
-
-### 🎤 Voice Input
-> **Speak naturally** - The AI extracts all details automatically from your voice commands
-
-### 📋 Kanban Board  
-> **Visual task management** - Drag-and-drop columns (To Do, In Progress, Done)
-
-### 🔍 Smart Filtering
-> **Find tasks instantly** - Search and filter by status, priority, or keywords
-
-### 🎨 Modern UI
-> **Beautiful design** - Dark theme with responsive design built using shadcn/ui
-
-### ⚡ Real-time Audio Visualization
-> **Visual feedback** - See your voice being captured in real-time
-
-### 🤖 AI-Powered Parsing
-> **Intelligent extraction** - Uses Google Gemini to understand natural language
-
----
-
-## 🛠️ Tech Stack
-
-### 🔧 Backend
-
-<div align="center">
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  Node.js v22  │  Express v5  │  TypeScript  │  Prisma  │
-│  PostgreSQL   │  Deepgram    │  Gemini AI   │   Zod    │
-└─────────────────────────────────────────────────────────┘
-```
-
-</div>
-
-| 🟢 Technology | 📝 Purpose |
-|:---:|:---|
-| **Node.js v22** | Runtime environment |
-| **Express v5** | Web framework |
-| **TypeScript** | Type-safe development |
-| **PostgreSQL** | Relational database |
-| **Prisma ORM** | Database toolkit |
-| **Deepgram API** | Speech-to-text conversion |
-| **Google Gemini API** | Natural language processing |
-| **Zod** | Schema validation |
-
-### 🎨 Frontend
-
-<div align="center">
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  React 19  │  TypeScript  │  Vite  │  Tailwind CSS v4  │
-│  shadcn/ui │  Axios       │  DnD Kit                   │
-└─────────────────────────────────────────────────────────┘
-```
-
-</div>
-
-| 🟦 Technology | 📝 Purpose |
-|:---:|:---|
-| **React 19** | UI framework |
-| **TypeScript** | Type-safe development |
-| **Vite** | Build tool & dev server |
-| **shadcn/ui** | Component library |
-| **Tailwind CSS v4** | Utility-first styling |
-| **Axios** | HTTP client |
-| **react-datepicker** | Date selection component |
-
----
-
-## 🚀 Quick Start
-
-### 📋 Prerequisites
-
-<div align="center">
-
-**Before you begin, make sure you have:**
-
-</div>
-
-| Requirement | Description | Link |
+| Requirement | Version/Details | Link |
 |:---:|:---|:---|
-| 🐳 **Docker** | Docker & Docker Compose (recommended) | [Get Docker](https://www.docker.com/) |
-| 📦 **Node.js** | Node.js v20+ (for manual setup) | [Download](https://nodejs.org/) |
-| 🗄️ **PostgreSQL** | PostgreSQL database (for manual setup) | [Download](https://www.postgresql.org/) |
-| 🔑 **Deepgram API** | Speech-to-text API key | [Get Free Key](https://console.deepgram.com) |
-| 🔑 **Gemini API** | Google Gemini API key | [Get Free Key](https://ai.google.dev) |
+| **Node.js** | v20+ (v22 recommended) | [Download](https://nodejs.org/) |
+| **Docker** | Docker Desktop with Docker Compose | [Get Docker](https://www.docker.com/) |
+| **PostgreSQL** | v14+ (included in Docker setup) | [Download](https://www.postgresql.org/) |
+| **Deepgram API Key** | Free tier available | [Get Free Key](https://console.deepgram.com) |
+| **Google Gemini API Key** | Free tier available | [Get Free Key](https://ai.google.dev) |
 
----
+### b. Install Steps
 
-### 🐳 Docker Setup (Recommended)
-
-<div align="center">
-
-#### ⚡ **One-Command Setup - Fastest way to get started**
-
-</div>
-
-#### 📝 Step 1: Create Environment File
-
-Create a `.env` file in the **root directory** of the project:
-
-<details>
-<summary><b>📋 Click to expand .env template</b></summary>
-
-```env
-# 🗄️ Database Configuration
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=vett
-POSTGRES_PORT=5432
-
-# 🔑 API Keys (Required)
-DEEPGRAM_API_KEY=your_deepgram_api_key_here
-GEMINI_API_KEY=your_gemini_api_key_here
-OPENAI_API_KEY=your_openai_api_key_here
-
-# ⚙️ Server Configuration
-NODE_ENV=production
-BACKEND_PORT=3000
-FRONTEND_PORT=5173
-
-# 🌐 Frontend Configuration
-VITE_API_URL=http://localhost:3000/api
-```
-
-</details>
-
-#### 🚀 Step 2: Run One Command
-
-**Option A: Using Setup Scripts (Recommended)**
+#### Option 1: Docker Setup (Recommended - One Command)
 
 **For Linux/Mac:**
 ```bash
-# Make script executable (first time only)
 chmod +x setup.sh
-
-# Run the script
 ./setup.sh
 ```
 
 **For Windows (PowerShell):**
 ```powershell
-# Run the script
 .\setup.ps1
 ```
 
-**If you get an execution policy error on Windows**, run this first:
+If you get an execution policy error on Windows:
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-**Or run with bypass:**
-```powershell
+# OR
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 
-**Option B: Direct Docker Compose (Alternative)**
+**Or manually:**
 ```bash
 docker compose up --build
 ```
 
-<div align="center">
+The setup script will:
+- Check Docker installation
+- Create `.env` file from template if missing
+- Prompt for API keys
+- Build and start all containers (Frontend, Backend, Database, Adminer)
+- Run database migrations automatically
 
-✅ **That's it!** The setup script will:
-- ✅ Check Docker and Docker Compose installation
-- ✅ Create `.env` file from template if it doesn't exist
-- ✅ Prompt you to add API keys (if `.env` was just created)
-- ✅ Build and start all containers (Frontend, Backend, Database, Adminer)
-- ✅ Run database migrations automatically (or push schema if no migrations exist)
-- ✅ Start all services in detached mode
-- ✅ Display service URLs and useful commands
+#### Option 2: Manual Setup
 
-</div>
-
-#### 🎉 Step 3: Access Your Application
-
-<div align="center">
-
-| Service | URL | Description |
-|:---:|:---|:---|
-| 🌐 **Frontend** | http://localhost:5173 | Main application |
-| 🔧 **Backend API** | http://localhost:3000 | REST API |
-| 🗄️ **Adminer** | http://localhost:8080 | Database admin tool |
-
-🎉 **You're all set!** Open your browser and start creating tasks with your voice!
-
-</div>
-
-#### 📝 Useful Docker Commands
-
+**Backend:**
 ```bash
-# View all logs
+cd backend
+npm install
+cp .env.example .env  # Edit with your API keys
+npm run prisma:generate
+npm run prisma:migrate
+npm run dev
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+cp .env.example .env  # Optional: Set VITE_API_URL
+npm run dev
+```
+
+### c. Environment Configuration
+
+Create a `.env` file in the root directory:
+
+```env
+# Database Configuration
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=vett
+POSTGRES_PORT=5432
+
+# API Keys (Required)
+DEEPGRAM_API_KEY=your_deepgram_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Server Configuration
+NODE_ENV=production
+BACKEND_PORT=3000
+FRONTEND_PORT=5173
+
+# Frontend Configuration
+VITE_API_URL=http://localhost:3000/api
+```
+
+### d. How to Run Everything Locally
+
+**Using Docker (Recommended):**
+```bash
+docker compose up --build
+```
+
+Access the application:
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3000/api
+- **Adminer (DB Admin)**: http://localhost:8080
+
+**Manual Setup:**
+1. Start PostgreSQL database
+2. Run backend: `cd backend && npm run dev`
+3. Run frontend: `cd frontend && npm run dev`
+
+### e. Seed Data / Initial Scripts
+
+No seed data is required. The database schema is automatically created via Prisma migrations when using Docker setup.
+
+**Useful Docker Commands:**
+```bash
+# View logs
 docker compose logs -f
 
-# View logs for specific service
-docker compose logs -f backend
-docker compose logs -f frontend
-docker compose logs -f postgres
-
-# Stop all services
+# Stop services
 docker compose down
 
-# Stop and remove volumes (clean slate - deletes database data)
-docker compose down -v
-
-# Rebuild and restart (after code changes)
+# Rebuild after code changes
 docker compose up --build -d
-
-# Restart a specific service
-docker compose restart backend
-docker compose restart frontend
 
 # Check service status
 docker compose ps
 ```
 
-#### 🔧 Troubleshooting
+---
 
-**Issue: PowerShell script won't run**
-- Solution: Run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` or use the bypass command shown above
+## 2. Tech Stack
 
-**Issue: Port already in use**
-- Solution: Change the ports in `.env` file (BACKEND_PORT, FRONTEND_PORT, POSTGRES_PORT)
+### Frontend
+- **React 19** - UI framework
+- **TypeScript** - Type-safe development
+- **Vite** - Build tool & dev server
+- **Tailwind CSS v4** - Utility-first styling
+- **shadcn/ui** - Component library
+- **@dnd-kit** - Drag-and-drop functionality
+- **Axios** - HTTP client
+- **react-datepicker** - Date selection component
 
-**Issue: Database connection errors**
-- Solution: Make sure PostgreSQL container is healthy: `docker compose ps`
-- Wait a few seconds after starting for database to initialize
+### Backend
+- **Node.js v22** - Runtime environment
+- **Express v5** - Web framework
+- **TypeScript** - Type-safe development
+- **PostgreSQL** - Relational database
+- **Prisma ORM** - Database toolkit & migrations
+- **Zod** - Schema validation
 
-**Issue: Migrations not running**
-- Solution: The script automatically handles this. If issues persist, manually run:
-  ```bash
-  docker compose exec backend npm run prisma:migrate:deploy
-  ```
+### AI Provider
+- **Deepgram API** - Speech-to-text conversion
+- **Google Gemini API** - Natural language processing for task parsing
+
+### Key Libraries
+- **@deepgram/sdk** - Deepgram integration
+- **@google/genai** - Google Gemini integration
+- **@prisma/client** - Database client
+- **multer** - File upload handling
+- **cors** - Cross-origin resource sharing
 
 ---
 
-## 📖 Manual Setup
+## 3. API Documentation
 
-### 🔧 Backend Setup
+### Base URL
+```
+http://localhost:3000/api
+```
 
-<details>
-<summary><b>🔽 Click to expand backend setup instructions</b></summary>
+### Tasks Endpoints
 
-#### 1️⃣ Install Dependencies
+#### GET `/api/tasks`
+Get all tasks with optional filtering.
 
+**Query Parameters:**
+- `search` (string, optional): Search tasks by title/description
+- `status` (enum, optional): Filter by status (`TODO`, `IN_PROGRESS`, `DONE`)
+- `priority` (enum, optional): Filter by priority (`LOW`, `MEDIUM`, `HIGH`, `URGENT`)
+- `dueDateFrom` (ISO string, optional): Filter tasks with due date from
+- `dueDateTo` (ISO string, optional): Filter tasks with due date to
+
+**Example Request:**
 ```bash
-cd backend
-npm install
+GET /api/tasks?status=TODO&priority=HIGH
 ```
 
-#### 2️⃣ Configure Environment Variables
-
-Create a `.env` file in the `backend` directory:
-
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/vett
-DEEPGRAM_API_KEY=your_deepgram_api_key
-GEMINI_API_KEY=your_gemini_api_key
-PORT=3000
-NODE_ENV=development
+**Success Response (200):**
+```json
+[
+  {
+    "id": "uuid",
+    "title": "Review pull request",
+    "description": "Review the authentication PR",
+    "status": "TODO",
+    "priority": "HIGH",
+    "dueDate": "2024-12-25T18:00:00.000Z",
+    "createdAt": "2024-12-20T10:00:00.000Z",
+    "updatedAt": "2024-12-20T10:00:00.000Z"
+  }
+]
 ```
 
-#### 3️⃣ Set Up Database
-
-```bash
-npm run prisma:generate
-npm run prisma:migrate
+**Error Response (400):**
+```json
+{
+  "error": "Invalid status filter. Must be one of: TODO, IN_PROGRESS, DONE"
+}
 ```
-
-#### 4️⃣ Start Development Server
-
-```bash
-npm run dev
-```
-
-</details>
-
-### 🎨 Frontend Setup
-
-<details>
-<summary><b>🔽 Click to expand frontend setup instructions</b></summary>
-
-#### 1️⃣ Install Dependencies
-
-```bash
-cd frontend
-npm install
-```
-
-#### 2️⃣ Configure Environment Variables (Optional)
-
-Create a `.env` file in the `frontend` directory:
-
-```env
-VITE_API_URL=http://localhost:3000/api
-```
-
-#### 3️⃣ Start Development Server
-
-```bash
-npm run dev
-```
-
-</details>
 
 ---
 
-## 🔌 API Documentation
+#### GET `/api/tasks/:id`
+Get a task by ID.
 
-### 📋 Tasks Endpoints
+**Path Parameters:**
+- `id` (string, required): Task UUID
 
-<div align="center">
+**Example Request:**
+```bash
+GET /api/tasks/c24b8ce2-743e-4a17-8e20-0339f0db048e
+```
 
-| Method | Endpoint | Description | Query Params |
-|:---:|:---|:---|:---|
-| `GET` | `/api/tasks` | Get all tasks | `search`, `status`, `priority` |
-| `GET` | `/api/tasks/:id` | Get task by ID | - |
-| `POST` | `/api/tasks` | Create a new task | - |
-| `PUT` | `/api/tasks/:id` | Update a task | - |
-| `DELETE` | `/api/tasks/:id` | Delete a task | - |
+**Success Response (200):**
+```json
+{
+  "id": "c24b8ce2-743e-4a17-8e20-0339f0db048e",
+  "title": "Review pull request",
+  "description": "Review the authentication PR",
+  "status": "TODO",
+  "priority": "HIGH",
+  "dueDate": "2024-12-25T18:00:00.000Z",
+  "createdAt": "2024-12-20T10:00:00.000Z",
+  "updatedAt": "2024-12-20T10:00:00.000Z"
+}
+```
 
-</div>
-
-### 🎤 Voice Endpoints
-
-<div align="center">
-
-| Method | Endpoint | Description |
-|:---:|:---|:---|
-| `POST` | `/api/voice/parse` | Parse text transcript into structured task data |
-| `POST` | `/api/voice/transcribe` | Transcribe audio file and parse into task data |
-
-</div>
-
-### ❤️ Health Check
-
-<div align="center">
-
-| Method | Endpoint | Description |
-|:---:|:---|:---|
-| `GET` | `/health` | Health check endpoint |
-
-</div>
+**Error Response (404):**
+```json
+{
+  "error": "Task not found"
+}
+```
 
 ---
 
-## 📁 Project Structure
+#### POST `/api/tasks`
+Create a new task.
+
+**Request Body:**
+```json
+{
+  "title": "Review pull request",
+  "description": "Review the authentication PR",
+  "status": "TODO",
+  "priority": "HIGH",
+  "dueDate": "2024-12-25T18:00:00.000Z"
+}
+```
+
+**Field Constraints:**
+- `title` (string, required): 1-500 characters
+- `description` (string, optional): Max 5000 characters
+- `status` (enum, optional): `TODO`, `IN_PROGRESS`, `DONE`
+- `priority` (enum, optional): `LOW`, `MEDIUM`, `HIGH`, `URGENT`
+- `dueDate` (ISO string, optional): Must be today or future date
+
+**Example Request:**
+```bash
+POST /api/tasks
+Content-Type: application/json
+
+{
+  "title": "Fix login bug",
+  "description": "The login form is not validating email correctly",
+  "status": "IN_PROGRESS",
+  "priority": "URGENT",
+  "dueDate": "2024-12-22T23:59:59.000Z"
+}
+```
+
+**Success Response (201):**
+```json
+{
+  "id": "c24b8ce2-743e-4a17-8e20-0339f0db048e",
+  "title": "Fix login bug",
+  "description": "The login form is not validating email correctly",
+  "status": "IN_PROGRESS",
+  "priority": "URGENT",
+  "dueDate": "2024-12-22T23:59:59.000Z",
+  "createdAt": "2024-12-20T10:00:00.000Z",
+  "updatedAt": "2024-12-20T10:00:00.000Z"
+}
+```
+
+**Error Response (400):**
+```json
+{
+  "error": "Cannot select past date. Please select today or a future date."
+}
+```
+
+---
+
+#### PUT `/api/tasks/:id`
+Update an existing task.
+
+**Path Parameters:**
+- `id` (string, required): Task UUID
+
+**Request Body:**
+```json
+{
+  "title": "Updated task title",
+  "status": "DONE",
+  "priority": "MEDIUM"
+}
+```
+
+All fields are optional. At least one field must be provided.
+
+**Example Request:**
+```bash
+PUT /api/tasks/c24b8ce2-743e-4a17-8e20-0339f0db048e
+Content-Type: application/json
+
+{
+  "status": "DONE"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "id": "c24b8ce2-743e-4a17-8e20-0339f0db048e",
+  "title": "Fix login bug",
+  "description": "The login form is not validating email correctly",
+  "status": "DONE",
+  "priority": "URGENT",
+  "dueDate": "2024-12-22T23:59:59.000Z",
+  "createdAt": "2024-12-20T10:00:00.000Z",
+  "updatedAt": "2024-12-20T10:30:00.000Z"
+}
+```
+
+**Error Response (400):**
+```json
+{
+  "error": "At least one field must be provided for update"
+}
+```
+
+---
+
+#### DELETE `/api/tasks/:id`
+Delete a task.
+
+**Path Parameters:**
+- `id` (string, required): Task UUID
+
+**Example Request:**
+```bash
+DELETE /api/tasks/c24b8ce2-743e-4a17-8e20-0339f0db048e
+```
+
+**Success Response (204):**
+No content
+
+**Error Response (404):**
+```json
+{
+  "error": "Task not found"
+}
+```
+
+---
+
+### Voice Endpoints
+
+#### POST `/api/voice/parse`
+Parse a text transcript into structured task data using Google Gemini.
+
+**Request Body:**
+```json
+{
+  "transcript": "Create a high priority task to review the pull request by tomorrow evening"
+}
+```
+
+**Field Constraints:**
+- `transcript` (string, required): 1-10000 characters
+
+**Example Request:**
+```bash
+POST /api/voice/parse
+Content-Type: application/json
+
+{
+  "transcript": "Add a task to fix the login bug, it's urgent and should be in progress"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "transcript": "Add a task to fix the login bug, it's urgent and should be in progress",
+  "parsed": {
+    "title": "Fix the login bug",
+    "description": null,
+    "status": "IN_PROGRESS",
+    "priority": "URGENT",
+    "dueDate": null
+  }
+}
+```
+
+**Success Response with Warning (200):**
+```json
+{
+  "transcript": "Remind me to call John yesterday",
+  "parsed": {
+    "title": "Call John",
+    "description": null,
+    "status": null,
+    "priority": null,
+    "dueDate": null
+  },
+  "warning": "Cannot select past date. Date has been removed."
+}
+```
+
+**Error Response (400):**
+```json
+{
+  "error": "Transcript is required"
+}
+```
+
+---
+
+#### POST `/api/voice/transcribe`
+Transcribe an audio file and parse it into structured task data.
+
+**Request:**
+- Content-Type: `multipart/form-data`
+- Field name: `audio`
+- File types: `audio/webm`, `audio/mp4`, `audio/mpeg`, `audio/wav`, `audio/ogg`, `audio/x-m4a`, `audio/mp3`
+- Max file size: 10MB
+
+**Example Request:**
+```bash
+POST /api/voice/transcribe
+Content-Type: multipart/form-data
+
+[audio file as binary]
+```
+
+**Success Response (200):**
+```json
+{
+  "transcript": "Create a high priority task to review the pull request by tomorrow evening",
+  "parsed": {
+    "title": "Review the pull request",
+    "description": null,
+    "status": null,
+    "priority": "HIGH",
+    "dueDate": "2024-12-21T18:00:00.000Z"
+  }
+}
+```
+
+**Error Response (400):**
+```json
+{
+  "error": "Audio file is required"
+}
+```
+
+**Error Response (413):**
+```json
+{
+  "error": "Audio file is too large. Maximum size is 10MB"
+}
+```
+
+---
+
+### Health Check
+
+#### GET `/health`
+Check API health status.
+
+**Example Request:**
+```bash
+GET /health
+```
+
+**Success Response (200):**
+```json
+{
+  "status": "ok"
+}
+```
+
+---
+
+## 4. Decisions & Assumptions
+
+### Key Design Decisions
+
+#### Architecture
+- **Clean Architecture**: Separated into domain, use-cases, infrastructure, and presentation layers for maintainability and testability
+- **Dependency Injection**: Used a container pattern for managing dependencies
+- **Repository Pattern**: Abstracted database access through repository interfaces
+
+#### Database
+- **PostgreSQL**: Chosen for reliability and robust date/time handling
+- **Prisma ORM**: Used for type-safe database access and migrations
+- **UUID Primary Keys**: Used UUIDs instead of auto-incrementing IDs for better distributed system support
+
+#### API Design
+- **RESTful API**: Standard REST endpoints with clear resource naming
+- **Zod Validation**: Schema validation at the API layer for type safety
+- **Error Handling**: Consistent error response format across all endpoints
+- **CORS Configuration**: Explicitly configured to allow frontend origin
+
+#### Voice Processing
+- **Deepgram for STT**: Chosen for high accuracy and real-time transcription
+- **Google Gemini for NLP**: Used for natural language understanding and task extraction
+- **Two-Step Process**: Separate transcription and parsing endpoints for flexibility
+- **Past Date Validation**: Automatically removes past dates from voice input with user warning
+
+#### Frontend
+- **React 19**: Latest React version for performance
+- **Vite**: Fast build tool and HMR for development
+- **Drag-and-Drop**: Implemented using @dnd-kit for task status updates
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Date Picker**: Prevents past date selection on frontend and backend
+
+#### Docker Setup
+- **One-Command Setup**: Docker Compose for easy deployment
+- **Volume Mounts**: Hot-reload support for development
+- **Automatic Migrations**: Database migrations run automatically on container startup
+
+### Assumptions
+
+#### Limitations
+- **Date Handling**: Dates are compared in local timezone (date-only, ignoring time) to prevent timezone issues
+- **File Size**: Audio files limited to 10MB for performance
+- **Transcript Length**: Text transcripts limited to 10,000 characters
+- **Task Title**: Maximum 500 characters
+- **Task Description**: Maximum 5,000 characters
+
+#### API Keys
+- Users are expected to provide their own Deepgram and Gemini API keys
+- API keys are stored in environment variables, not in code
+
+#### Browser Support
+- Modern browsers with MediaRecorder API support required for voice input
+- Chrome, Firefox, Edge, Safari (latest versions)
+
+#### Date Formats
+- All dates accepted in ISO 8601 format
+- Dates are validated to prevent past date selection
+- Time component is ignored for date-only comparisons
+
+---
+
+## 5. AI Tools Usage
+
+### Which AI Tools You Used
+
+**ChatGPT/OpenAI**: Used for repetitive tasks, debugging, and code refactoring.
+
+### What They Helped With
+
+#### Code Refactoring
+- Refactored date comparison logic into a centralized utility function
+- Improved form reset logic in task creation modal
+- Consolidated validation logic across controllers
+- Optimized React component structure
+
+#### Debugging
+- Fixed React Hooks violations (usePriorityLabel hook called conditionally)
+- Resolved CORS policy issues
+- Fixed Deepgram API stream reuse errors
+- Debugged date comparison logic for timezone-related issues
+
+#### Repetitive Tasks
+- Generated TypeScript type definitions and interfaces
+- Created validation schemas
+- Set up boilerplate for API endpoints
+
+---
+
+## Project Structure
 
 ```
 vett/
 │
-├── 🐳 docker-compose.yml      # Root Docker Compose (all services)
-├── 📄 .env.example            # Environment variables template
-├── 📜 setup.sh                # Linux/Mac setup script
-├── 📜 setup.ps1               # Windows PowerShell setup script
-├── 📄 README.md               # This file
+├── docker-compose.yml      # Root Docker Compose (all services)
+├── .env.example            # Environment variables template
+├── setup.sh                # Linux/Mac setup script
+├── setup.ps1               # Windows PowerShell setup script
+├── README.md               # This file
 │
-├── 📂 backend/
-│   ├── 📂 src/
-│   │   ├── 📂 domain/          # Domain entities and interfaces
-│   │   │   ├── 📂 entities/    # Business entities
-│   │   │   └── 📂 interfaces/  # Domain interfaces
-│   │   ├── 📂 use-cases/       # Business logic
-│   │   │   ├── 📂 tasks/       # Task-related use cases
-│   │   │   └── 📂 voice/       # Voice processing use cases
-│   │   ├── 📂 infrastructure/  # External services
-│   │   │   ├── 📂 config/      # Configuration
-│   │   │   ├── 📂 container/   # Dependency injection
-│   │   │   ├── 📂 database/    # Database repositories
-│   │   │   └── 📂 services/    # External API services
-│   │   └── 📂 presentation/    # API layer
-│   │       ├── 📂 controllers/ # Request handlers
-│   │       ├── 📂 dto/         # Data transfer objects
-│   │       ├── 📂 middleware/  # Express middleware
-│   │       └── 📂 routes/      # API routes
-│   ├── 📂 prisma/              # Database schema and migrations
-│   └── 🐳 Dockerfile           # Backend container definition
+├── backend/
+│   ├── src/
+│   │   ├── domain/          # Domain entities and interfaces
+│   │   ├── use-cases/       # Business logic
+│   │   ├── infrastructure/  # External services
+│   │   └── presentation/    # API layer
+│   ├── prisma/              # Database schema and migrations
+│   └── Dockerfile           # Backend container definition
 │
-└── 📂 frontend/
-    ├── 📂 src/
-    │   ├── 📂 components/      # React components
-    │   │   ├── 📂 ui/          # Reusable UI components
-    │   │   └── ...             # Feature components
-    │   ├── 📂 hooks/
-    │   │   ├── 📂 api/         # API calling hooks
-    │   │   └── 📂 app/         # Business logic hooks
-    │   ├── 📂 lib/             # Utilities
-    │   │   ├── 📄 axios.ts     # HTTP client configuration
-    │   │   └── 📄 utils.ts     # Helper functions
-    │   ├── 📂 types/           # TypeScript type definitions
-    │   └── 📄 main.tsx         # Application entry point
-    ├── 📂 public/              # Static assets
-    └── 🐳 Dockerfile           # Frontend container definition
+└── frontend/
+    ├── src/
+    │   ├── components/      # React components
+    │   ├── hooks/           # Custom React hooks
+    │   ├── lib/             # Utilities
+    │   └── types/           # TypeScript type definitions
+    └── Dockerfile           # Frontend container definition
 ```
 
 ---
 
-## 💻 Development
+## Development Commands
 
-### 🔧 Backend Commands
-
-<div align="center">
-
-| Command | Description |
-|:---:|:---|
-| `npm run dev` | 🚀 Start development server with hot reload |
-| `npm run build` | 📦 Build for production |
-| `npm start` | ▶️ Start production server |
-| `npm run prisma:studio` | 🗄️ Open Prisma Studio (database GUI) |
-| `npm run prisma:migrate` | 🔄 Create a new migration |
-| `npm run prisma:generate` | ⚙️ Generate Prisma client |
-
-</div>
-
-### 🎨 Frontend Commands
-
-<div align="center">
-
-| Command | Description |
-|:---:|:---|
-| `npm run dev` | 🚀 Start development server |
-| `npm run build` | 📦 Build for production |
-| `npm run preview` | 👀 Preview production build |
-| `npm run lint` | ✅ Run ESLint |
-
-</div>
-
----
-
-## 🎯 How It Works
-
-<div align="center">
-
-### 🔄 **Process Flow**
-
-```
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│ User Speaks │ --> │ Audio Capture│ --> │ Deepgram API│
-└─────────────┘     └──────────────┘     └─────────────┘
-                                                
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│Text Transcript│ -->│Google Gemini │ --> │Structured   │
-└─────────────┘     └──────────────┘     │   Data      │
-                                        └─────────────┘
-                                                
-┌─────────────┐     ┌──────────────┐
-│Preview Modal│ --> │Save to DB    │
-└─────────────┘     └──────────────┘
+### Backend
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start            # Start production server
+npm run prisma:studio  # Open Prisma Studio
 ```
 
-</div>
-
-### 📝 Step-by-Step Process
-
-#### 1. 🎤 **Voice Recording**
-   - User clicks the microphone button and speaks their task
-   - Audio is captured using the browser's MediaRecorder API
-
-#### 2. 📡 **Audio Processing**
-   - Audio file is sent to the backend server
-   - Deepgram API converts speech to text transcript
-
-#### 3. 🤖 **AI Parsing**
-   - Google Gemini analyzes the transcript and extracts:
-     - ✅ Task title
-     - ✅ Description
-     - ✅ Priority (LOW, MEDIUM, HIGH, URGENT)
-     - ✅ Status (TODO, IN_PROGRESS, DONE)
-     - ✅ Due date (parsed from natural language)
-
-#### 4. 👀 **Preview & Confirmation**
-   - Parsed data is displayed in a preview modal
-   - User can review and edit before saving
-
-#### 5. 💾 **Task Creation**
-   - Confirmed task data is saved to PostgreSQL database
-   - Task appears in the Kanban board
-
----
-
-## 💡 Example Voice Inputs
-
-<div align="center">
-
-### 🗣️ **Try speaking these natural language commands:**
-
-</div>
-
-| 🎤 Voice Input | 📋 Expected Result |
-|:---|:---|
-| `"Create a high priority task to review the pull request by tomorrow evening"` | ✅ Task with **HIGH** priority, due tomorrow evening |
-| `"Add a task to fix the login bug, it's urgent and should be in progress"` | ✅ Task with **URGENT** priority, status **IN_PROGRESS** |
-| `"Remind me to call John on December 25th, make it medium priority"` | ✅ Task with **MEDIUM** priority, due date **December 25th** |
-| `"I need to finish the documentation by Friday"` | ✅ Task with default priority, due **Friday** |
-
-<div align="center">
-
-💡 **Tip:** The AI understands natural language, so feel free to speak naturally!
-
-</div>
-
----
-
-<div align="center">
-
-[⬆ Back to Top](#-vett---voice-enabled-task-tracker)
-
-</div>
+### Frontend
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+```
