@@ -41,10 +41,11 @@ function DraggableTaskCard({ task, onClick }: DraggableTaskCardProps) {
       <div
         {...listeners}
         {...attributes}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-accent/50 rounded"
+        className="absolute left-2 top-2 z-10 cursor-grab active:cursor-grabbing opacity-60 group-hover:opacity-100 transition-all duration-200 p-1.5 hover:bg-primary/20 hover:scale-110 rounded-md bg-background/80 border border-border/50 shadow-sm"
         aria-label="Drag to move task"
+        title="Drag to move task"
       >
-        <GripVertical className="h-4 w-4 text-muted-foreground" />
+        <GripVertical className="h-5 w-5 text-primary" />
       </div>
       <div onClick={onClick} className="cursor-pointer">
         <TaskCard
