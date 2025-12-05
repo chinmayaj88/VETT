@@ -8,7 +8,7 @@ import FilterBar from './components/FilterBar';
 import TaskFormModal from './components/TaskFormModal';
 import VoiceToTaskModal from './components/VoiceToTaskModal';
 import type { Task, CreateTaskInput, UpdateTaskInput } from './types/task';
-import { TaskStatus, TaskPriority } from './types/task';
+import { TaskStatus } from './types/task';
 import { Button } from './components/ui/button';
 import { Card } from './components/ui/card';
 import { useTasks } from './hooks/app/useTasks';
@@ -41,11 +41,11 @@ function DraggableTaskCard({ task, onClick }: DraggableTaskCardProps) {
       <div
         {...listeners}
         {...attributes}
-        className="absolute left-2 top-2 z-10 cursor-grab active:cursor-grabbing opacity-60 group-hover:opacity-100 transition-all duration-200 p-1.5 hover:bg-primary/20 hover:scale-110 rounded-md bg-background/80 border border-border/50 shadow-sm"
+        className="absolute right-2 top-2 z-10 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-all duration-200 p-1 hover:scale-110"
         aria-label="Drag to move task"
         title="Drag to move task"
       >
-        <GripVertical className="h-5 w-5 text-primary" />
+        <GripVertical className="h-5 w-5 text-white drop-shadow-lg" />
       </div>
       <div onClick={onClick} className="cursor-pointer">
         <TaskCard
