@@ -24,10 +24,13 @@ export class SpeechToTextService implements ISpeechToTextService {
   }
 
   async transcribeAudio(audioBuffer: Buffer, mimeType: string): Promise<SpeechToTextResult> {
-    const audioStream = Readable.from(audioBuffer);
+    let lastError: Error | null = null;
 
     for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
       try {
+        // Create a fresh stream for each attempt to avoid "Response body object should not be disturbed or locked" error
+        const audioStream = Readable.from(audioBuffer);
+
         const { result, error } = await this.deepgram.listen.prerecorded.transcribeFile(
           audioStream,
           {
@@ -37,6 +40,9 @@ export class SpeechToTextService implements ISpeechToTextService {
             punctuate: true,
           }
         );
+
+        // Clean up the stream
+        audioStream.destroy();
 
         if (error) {
           throw new Error(`Deepgram API error: ${error.message || 'Unknown error'}`);
@@ -55,17 +61,19 @@ export class SpeechToTextService implements ISpeechToTextService {
 
         return { transcript, confidence };
       } catch (error) {
+        lastError = error instanceof Error ? error : new Error('Unknown error');
+        
         if (attempt === this.maxRetries) {
-          const message = error instanceof Error ? error.message : 'Unknown error';
+          const message = lastError.message;
           throw new Error(`Transcription failed: ${message}`);
         }
+        
+        // Wait before retrying
         await this.delay(this.retryDelay * (attempt + 1));
-        audioStream.destroy();
-        audioStream.push(audioBuffer);
       }
     }
 
-    throw new Error('Transcription failed after retries');
+    throw new Error(`Transcription failed after retries: ${lastError?.message || 'Unknown error'}`);
   }
 
   private delay(ms: number): Promise<void> {
