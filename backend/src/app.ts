@@ -8,23 +8,41 @@ import { getTaskController, getVoiceController } from './infrastructure/containe
 export function createApp(): Express {
   const app = express();
 
-  // CORS configuration
-  app.use(cors());
+  const corsOptions = {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      if (!origin) {
+        return callback(null, true);
+      }
+      
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'http://localhost:3000', 
+        'http://localhost:8080', 
+      ];
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  };
   
-  // Body parsing with size limit
+  app.use(cors(corsOptions));
+  
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-  // API routes
   app.use('/api/tasks', createTaskRoutes(getTaskController()));
   app.use('/api/voice', createVoiceRoutes(getVoiceController()));
 
-  // Health check endpoint
   app.get('/health', (_, res) => {
     res.json({ status: 'ok' });
   });
 
-  // Global error handler (must be last)
   app.use(errorHandler);
 
   return app;
