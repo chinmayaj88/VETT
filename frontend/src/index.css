@@ -74,6 +74,19 @@
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Snap scrolling for mobile */
+.snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-mandatory {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
+
 /* Line clamp utility */
 .line-clamp-2 {
   display: -webkit-box;
@@ -185,7 +198,14 @@
 .react-datepicker__quarter-text:hover,
 .react-datepicker__year-text:hover {
   background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  color: hsl(var(--accent-foreground)) !important;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+  color: hsl(var(--accent-foreground)) !important;
 }
 
 .react-datepicker__day--selected,

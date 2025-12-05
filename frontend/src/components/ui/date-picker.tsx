@@ -67,6 +67,7 @@ export function DatePickerInput({
           className={cn(
             "w-full justify-start text-left font-normal",
             !value && "text-muted-foreground",
+            "hover:bg-accent hover:text-accent-foreground",
             className
           )}
         >
@@ -74,19 +75,19 @@ export function DatePickerInput({
           {value && selectedDate ? (
             (() => {
               try {
-                return selectedDate.toLocaleString("en-US", {
+                return <span className="text-foreground">{selectedDate.toLocaleString("en-US", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
                   hour: "numeric",
                   minute: "2-digit",
-                });
+                })}</span>;
               } catch {
-                return <span>{placeholder}</span>;
+                return <span className="text-foreground">{placeholder}</span>;
               }
             })()
           ) : (
-            <span>{placeholder}</span>
+            <span className="text-foreground">{placeholder}</span>
           )}
         </Button>
       </DialogTrigger>
