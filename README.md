@@ -181,17 +181,34 @@ VITE_API_URL=http://localhost:3000/api
 
 #### 🚀 Step 2: Run One Command
 
+**Option A: Using Setup Scripts (Recommended)**
+
 **For Linux/Mac:**
 ```bash
+# Make script executable (first time only)
+chmod +x setup.sh
+
+# Run the script
 ./setup.sh
 ```
 
 **For Windows (PowerShell):**
 ```powershell
+# Run the script
 .\setup.ps1
 ```
 
-**Or manually with Docker Compose:**
+**If you get an execution policy error on Windows**, run this first:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+**Or run with bypass:**
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+```
+
+**Option B: Direct Docker Compose (Alternative)**
 ```bash
 docker compose up --build
 ```
@@ -199,11 +216,13 @@ docker compose up --build
 <div align="center">
 
 ✅ **That's it!** The setup script will:
-- ✅ Check Docker installation
-- ✅ Create `.env` file if needed
-- ✅ Build and start all containers (Frontend, Backend, Database)
+- ✅ Check Docker and Docker Compose installation
+- ✅ Create `.env` file from template if it doesn't exist
+- ✅ Prompt you to add API keys (if `.env` was just created)
+- ✅ Build and start all containers (Frontend, Backend, Database, Adminer)
 - ✅ Run database migrations automatically (or push schema if no migrations exist)
-- ✅ Start all services
+- ✅ Start all services in detached mode
+- ✅ Display service URLs and useful commands
 
 </div>
 
@@ -224,22 +243,48 @@ docker compose up --build
 #### 📝 Useful Docker Commands
 
 ```bash
-# View logs
+# View all logs
 docker compose logs -f
 
 # View logs for specific service
 docker compose logs -f backend
 docker compose logs -f frontend
+docker compose logs -f postgres
 
 # Stop all services
 docker compose down
 
-# Stop and remove volumes (clean slate)
+# Stop and remove volumes (clean slate - deletes database data)
 docker compose down -v
 
-# Rebuild and restart
+# Rebuild and restart (after code changes)
 docker compose up --build -d
+
+# Restart a specific service
+docker compose restart backend
+docker compose restart frontend
+
+# Check service status
+docker compose ps
 ```
+
+#### 🔧 Troubleshooting
+
+**Issue: PowerShell script won't run**
+- Solution: Run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` or use the bypass command shown above
+
+**Issue: Port already in use**
+- Solution: Change the ports in `.env` file (BACKEND_PORT, FRONTEND_PORT, POSTGRES_PORT)
+
+**Issue: Database connection errors**
+- Solution: Make sure PostgreSQL container is healthy: `docker compose ps`
+- Wait a few seconds after starting for database to initialize
+
+**Issue: Migrations not running**
+- Solution: The script automatically handles this. If issues persist, manually run:
+  ```bash
+  docker compose exec backend npm run prisma:migrate:deploy
+  ```
 
 ---
 
@@ -358,6 +403,12 @@ npm run dev
 ```
 vett/
 │
+├── 🐳 docker-compose.yml      # Root Docker Compose (all services)
+├── 📄 .env.example            # Environment variables template
+├── 📜 setup.sh                # Linux/Mac setup script
+├── 📜 setup.ps1               # Windows PowerShell setup script
+├── 📄 README.md               # This file
+│
 ├── 📂 backend/
 │   ├── 📂 src/
 │   │   ├── 📂 domain/          # Domain entities and interfaces
@@ -377,7 +428,6 @@ vett/
 │   │       ├── 📂 middleware/  # Express middleware
 │   │       └── 📂 routes/      # API routes
 │   ├── 📂 prisma/              # Database schema and migrations
-│   ├── 🐳 docker-compose.yml   # Docker configuration
 │   └── 🐳 Dockerfile           # Backend container definition
 │
 └── 📂 frontend/
@@ -393,7 +443,8 @@ vett/
     │   │   └── 📄 utils.ts     # Helper functions
     │   ├── 📂 types/           # TypeScript type definitions
     │   └── 📄 main.tsx         # Application entry point
-    └── 📂 public/              # Static assets
+    ├── 📂 public/              # Static assets
+    └── 🐳 Dockerfile           # Frontend container definition
 ```
 
 ---
