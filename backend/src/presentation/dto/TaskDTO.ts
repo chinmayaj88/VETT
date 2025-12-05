@@ -3,7 +3,7 @@ import { TaskStatus, TaskPriority } from '../../domain/entities/Task';
 
 export const CreateTaskSchema = z.object({
   title: z.string().min(1).max(500),
-  description: z.string().max(2000).optional().nullable(),
+  description: z.string().max(5000).optional().nullable(),
   status: z.nativeEnum(TaskStatus).optional(),
   priority: z.nativeEnum(TaskPriority).optional(),
   dueDate: z.union([z.string().datetime(), z.date()]).optional().nullable(),
@@ -11,7 +11,7 @@ export const CreateTaskSchema = z.object({
 
 export const UpdateTaskSchema = z.object({
   title: z.string().min(1).max(500).optional(),
-  description: z.string().max(2000).optional().nullable(),
+  description: z.string().max(5000).optional().nullable(),
   status: z.nativeEnum(TaskStatus).optional(),
   priority: z.nativeEnum(TaskPriority).optional(),
   dueDate: z.union([z.string().datetime(), z.date()]).optional().nullable(),

@@ -31,6 +31,7 @@ export default function TaskFormModal({ isOpen, onClose, task, onSave, onDelete 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const { formData, updateField, handleSave: handleFormSave } = useTaskForm({
     task,
+    isOpen,
     onSave,
     onClose,
   });
