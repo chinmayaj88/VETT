@@ -1,0 +1,56 @@
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vett-db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-vett}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - vett_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer:latest
+    container_name: vett-adminer
+    restart: always
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vett-backend
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "npm run prisma:migrate:deploy && npm start"
+    volumes:
+      - ./prisma:/app/prisma
+
+volumes:
+  vett_postgres_data:
