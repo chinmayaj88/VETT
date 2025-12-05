@@ -65,9 +65,9 @@ export function DatePickerInput({
           id={id}
           variant="outline"
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "w-full justify-start text-left font-normal group",
             !value && "text-muted-foreground",
-            "hover:bg-accent hover:text-accent-foreground",
+            "hover:bg-black hover:text-white",
             className
           )}
         >
@@ -75,7 +75,7 @@ export function DatePickerInput({
           {value && selectedDate ? (
             (() => {
               try {
-                return <span className="text-foreground">{selectedDate.toLocaleString("en-US", {
+                return <span className="text-foreground group-hover:text-white">{selectedDate.toLocaleString("en-US", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
@@ -83,11 +83,11 @@ export function DatePickerInput({
                   minute: "2-digit",
                 })}</span>;
               } catch {
-                return <span className="text-foreground">{placeholder}</span>;
+                return <span className="text-foreground group-hover:text-white">{placeholder}</span>;
               }
             })()
           ) : (
-            <span className="text-foreground">{placeholder}</span>
+            <span className="text-foreground group-hover:text-white">{placeholder}</span>
           )}
         </Button>
       </DialogTrigger>
@@ -104,6 +104,8 @@ export function DatePickerInput({
             dateFormat="MMMM d, yyyy h:mm aa"
             inline
             className="w-full"
+            minDate={new Date()}
+            allowSameDay={true}
           />
         </div>
       </DialogContent>

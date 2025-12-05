@@ -197,15 +197,8 @@
 .react-datepicker__month-text:hover,
 .react-datepicker__quarter-text:hover,
 .react-datepicker__year-text:hover {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground)) !important;
-}
-
-.react-datepicker__day:hover,
-.react-datepicker__month-text:hover,
-.react-datepicker__quarter-text:hover,
-.react-datepicker__year-text:hover {
-  color: hsl(var(--accent-foreground)) !important;
+  background-color: hsl(0 0% 0%) !important;
+  color: hsl(0 0% 100%) !important;
 }
 
 .react-datepicker__day--selected,
