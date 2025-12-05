@@ -145,73 +145,101 @@
 
 <div align="center">
 
-#### ⚡ **Fastest way to get started**
+#### ⚡ **One-Command Setup - Fastest way to get started**
 
 </div>
 
-#### 📍 Step 1: Navigate to Backend
+#### 📝 Step 1: Create Environment File
 
-```bash
-cd backend
-```
-
-#### 📝 Step 2: Create Environment File
-
-Create a `.env` file in the `backend` directory:
+Create a `.env` file in the **root directory** of the project:
 
 <details>
 <summary><b>📋 Click to expand .env template</b></summary>
 
 ```env
 # 🗄️ Database Configuration
-DATABASE_URL=postgresql://postgres:postgres@postgres:5432/vett
-
-# 🔑 API Keys
-DEEPGRAM_API_KEY=your_deepgram_api_key_here
-GEMINI_API_KEY=your_gemini_api_key_here
-
-# ⚙️ Server Configuration
-PORT=3000
-NODE_ENV=production
-
-# 🐘 PostgreSQL Settings (optional, defaults shown)
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=vett
 POSTGRES_PORT=5432
+
+# 🔑 API Keys (Required)
+DEEPGRAM_API_KEY=your_deepgram_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+
+# ⚙️ Server Configuration
+NODE_ENV=production
+BACKEND_PORT=3000
+FRONTEND_PORT=5173
+
+# 🌐 Frontend Configuration
+VITE_API_URL=http://localhost:3000/api
 ```
 
 </details>
 
-#### 🚀 Step 3: Start Backend Services
+#### 🚀 Step 2: Run One Command
 
+**For Linux/Mac:**
 ```bash
-docker-compose up --build
+./setup.sh
+```
+
+**For Windows (PowerShell):**
+```powershell
+.\setup.ps1
+```
+
+**Or manually with Docker Compose:**
+```bash
+docker compose up --build
 ```
 
 <div align="center">
 
-✅ **Backend running at** `http://localhost:3000`
+✅ **That's it!** The setup script will:
+- ✅ Check Docker installation
+- ✅ Create `.env` file if needed
+- ✅ Build and start all containers (Frontend, Backend, Database)
+- ✅ Run database migrations automatically (or push schema if no migrations exist)
+- ✅ Start all services
 
 </div>
 
-#### 🎨 Step 4: Start Frontend
-
-Open a **new terminal** and run:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
+#### 🎉 Step 3: Access Your Application
 
 <div align="center">
 
-✅ **Frontend running at** `http://localhost:5173`
+| Service | URL | Description |
+|:---:|:---|:---|
+| 🌐 **Frontend** | http://localhost:5173 | Main application |
+| 🔧 **Backend API** | http://localhost:3000 | REST API |
+| 🗄️ **Adminer** | http://localhost:8080 | Database admin tool |
 
 🎉 **You're all set!** Open your browser and start creating tasks with your voice!
 
 </div>
+
+#### 📝 Useful Docker Commands
+
+```bash
+# View logs
+docker compose logs -f
+
+# View logs for specific service
+docker compose logs -f backend
+docker compose logs -f frontend
+
+# Stop all services
+docker compose down
+
+# Stop and remove volumes (clean slate)
+docker compose down -v
+
+# Rebuild and restart
+docker compose up --build -d
+```
 
 ---
 
